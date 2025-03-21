@@ -173,7 +173,6 @@ https://www.drbworld.com/holding/
 
 첫 번째 질문을 시작해 주세요.
 
----
 나의 운동 목표에 대해 질문을 해 주세요. 충분한 정보를 얻어 나에게 적합한 근력 운동 계획을 제안할 수 있을 때까지 질문을 계속하세요. 정보를 다 모으면 근력 운동 계획을 보여 주세요. 질문을 한 번에 하나씩 하세요. 
 
 첫 번째 질문을 시작해 주세요.
@@ -190,7 +189,6 @@ https://www.drbworld.com/holding/
 아래 내용을 CSV 형식으로 출력하세요.
 최근 발견된 행성 후르츠에서는 많은 과일들이 있습니다. 거기에서 자라는 네오스키즐이라는 과일은 보라색이며 사탕처럼 달콤한 맛이 납니다. 또한 회색빛 파란색의 과일인 로헤클도 있으며, 레몬처럼 매우 시큼합니다. 파운잇은 밝은 녹색이며 단맛보다는 짭짤한 맛이 납니다. 네온 핑크색의 루프노바도 풍부하며, 솜사탕처럼 맛이 납니다. 마지막으로, 옅은 오렌지색을 띠는 글로울이라는 과일은 신맛과 쓴맛이 매우 강하며 산성이고 부식성이 있습니다.
 
----
 아래 내용을 CSV 형식으로 출력하세요.
 제 이름은 홍길동입니다. 저는 현재 프롬프트 엔지니어링 수업을 듣고 있습니다.
 
@@ -217,7 +215,6 @@ https://www.drbworld.com/holding/
 런던,2->파리,4->로마,5->마드리드,3
 
 
---- 
 기능을 추가하려고 합니다. 출발지와 도착지를 알려주면 출발지와 도착지 사이에 경유할 장소를 포함한 전체 경유지 목록을 제공합니다.
 
 뉴욕,0->…->…->시카고,3
@@ -409,7 +406,6 @@ Final Answer : 원래 입력 질문에 대한 최종 답변
 
 모든 영수증의 총 청구 금액은 얼마인가요?
 
----
 생선회는 총 몇 개 구입했나요?
 생선회 총 청구 금액은 얼마인가요?
 구입한 쇠고기의 총 금액은 얼마인가요?
@@ -467,40 +463,48 @@ Final Answer : 원래 입력 질문에 대한 최종 답변
     current_category = None
     
     # 줄별로 분석하여 카테고리와 프롬프트 제목을 추출
-    for line in data.split('\n'):
+    lines = data.strip().split('\n')
+    i = 0
+    
+    while i < len(lines):
+        line = lines[i]
+        
         # 카테고리 추출
         category_match = re.match(r'<<(.+)>>', line)
         if category_match:
             current_category = category_match.group(1).strip()
+            i += 1
             continue
         
-        # 프롬프트 제목 추출
-        title_match = re.match(r'--- (.+) -+', line)
+        # 프롬프트 제목 추출 (패턴 수정: --- 다음에 제목이 있고, 그 뒤에 하이픈이 여러 개 있는 경우)
+        title_match = re.match(r'--- (.+?) -+', line)
         if title_match and current_category:
             title = title_match.group(1).strip()
-            # 프롬프트 내용 시작 인덱스
-            start_idx = data.index(line)
             
-            # 다음 프롬프트 제목 찾기
-            next_title_idx = data.find('\n---', start_idx + 1)
-            next_category_idx = data.find('\n<<', start_idx + 1)
+            # 프롬프트 내용 수집
+            content_lines = [line]  # 제목 라인도 포함
+            j = i + 1
             
-            # 종료 인덱스 결정
-            if next_title_idx != -1 and (next_category_idx == -1 or next_title_idx < next_category_idx):
-                end_idx = next_title_idx
-            elif next_category_idx != -1:
-                end_idx = next_category_idx
-            else:
-                end_idx = len(data)
+            # 다음 프롬프트 제목 또는 카테고리를 만날 때까지 내용 수집
+            while j < len(lines):
+                next_line = lines[j]
+                # 다음 프롬프트 제목이나 카테고리를 만나면 중단
+                if re.match(r'--- .+? -+', next_line) or re.match(r'<<.+>>', next_line):
+                    break
+                content_lines.append(next_line)
+                j += 1
             
-            # 프롬프트 내용 추출
-            content = data[start_idx:end_idx].strip()
+            content = '\n'.join(content_lines)
             
             # 카테고리에 프롬프트 추가
             categories[current_category].append({
                 'title': title,
                 'content': content
             })
+            
+            i = j  # 다음 줄부터 계속
+        else:
+            i += 1
     
     return categories
 
