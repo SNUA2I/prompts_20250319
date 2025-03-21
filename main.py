@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 비밀번호 설정 (실제 배포 시에는 더 안전한 방법 사용 권장)
+# 비밀번호 설정
 PASSWORD = "idslab2025"
 
 # 데이터 준비 함수
