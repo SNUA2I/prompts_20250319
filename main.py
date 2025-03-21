@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 비밀번호 설정
+# 비밀번호 설정 (실제 배포 시에는 더 안전한 방법 사용 권장)
 PASSWORD = "idslab2025"
 
 # 데이터 준비 함수
@@ -303,16 +303,6 @@ https://singjupost.com/steve-jobs-how-to-live-before-you-die-2005-speech-full-tr
 </내용>
 
 
-        우리 반 친구들의 키 데이터를 이용해서 평균 키를 구하고, 각 친구의 키를 막대그래프로 나타내는 파이썬 코드를 작성하세요. 이를 위해 다음 단계를 수행합니다.
-
-        1.미리 준비된 리스트에 친구들의 키 데이터를 저장합니다.
-        예시: heights = [125, 137, 142, 159, 132, 135, 150, 148]
-        2. 리스트를 사용하여 전체 친구들의 평균 키를 계산하고, 그 결과를 출력합니다.
-        3. matplotlib 라이브러리를 사용하여 각 친구의 키를 보여주는 막대그래프를 그립니다.
-        4. 막대그래프에는 전체 친구들의 평균 키를 나타내는 실선을 추가합니다.
-        5. 코드의 각 부분에 대해 간단한 설명을 주석으로 추가합니다.
-
-
 
 --- Reason and Act (ReAct) ----------------------------------------------------
 주어진 질문에 답하십시오. 당신은 검색에 접근할 수 있습니다.
@@ -527,12 +517,8 @@ def check_password():
         return True
     
     # 웹사이트 제목과 설명 추가
-    st.title("프롬프트 엔지니어링 실습 자료")
-    st.markdown("""
-    이 웹사이트는 프롬프트 엔지니어링 학습을 위한 다양한 프롬프트 예제를 모아놓은 곳입니다.
-    프롬프트 기법, 대규모 언어 모델의 특성, 챗봇 활용 등 다양한 범주의 예제를 제공합니다.
-    접근하려면 비밀번호를 입력하세요.
-    """)
+    st.title("실습 프롬프트")
+    st.markdown("프롬프트 엔지니어링 학습을 위한 실습 프롬프트")
     
     password_input = st.text_input(
         "비밀번호를 입력하세요:", 
@@ -567,7 +553,7 @@ def display_prompts():
             st.sidebar.markdown(f"- [{title}](#{title.replace(' ', '-')})")
     
     # 메인 콘텐츠
-    st.title("프롬프트 엔지니어링 실습")
+    st.title("실습 프롬프트")
     st.markdown("---")
     
     # 카테고리별 프롬프트 표시
@@ -577,10 +563,14 @@ def display_prompts():
             title = prompt['title']
             content = prompt['content']
             
+            # 제목 라인 이후의 실제 프롬프트 내용만 추출
+            content_lines = content.split('\n')
+            actual_content = '\n'.join([line for line in content_lines if not line.startswith('--- ')])
+            
             # 앵커 포인트 추가
             st.markdown(f"<a name='{title.replace(' ', '-')}'></a>", unsafe_allow_html=True)
             st.subheader(title)
-            st.markdown("```\n" + content + "\n```")
+            st.markdown("```\n" + actual_content + "\n```")
             st.markdown("---")
 
 # 메인 애플리케이션
