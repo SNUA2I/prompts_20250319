@@ -15,7 +15,7 @@ st.markdown(
     """, unsafe_allow_html=True
 )
 
-# 프롬프트들을 딕셔너리의 리스트로 정의 (비밀번호 기능 제거)
+# 프롬프트들을 딕셔너리의 리스트로 정의 (개별 비밀번호는 제거)
 prompts = [
     {
         "title": "수학 게임 챗봇",
@@ -135,15 +135,30 @@ for group in group_order:
 
 st.sidebar.markdown(sidebar_markdown, unsafe_allow_html=True)
 
-# 메인 타이틀 (페이지 제목)
 st.title("A2I 실습 프롬프트")
 
-# 각 프롬프트별로 UI 구성 (각 섹션 앞에 앵커를 삽입)
-for i, item in enumerate(prompts):
-    st.markdown(f"<a id='prompt-{i}'></a>", unsafe_allow_html=True)
-    st.write("---")
-    st.subheader(item["title"])
-    
-    # 불필요한 비밀번호 입력창과 버튼 제거: 바로 프롬프트 내용 출력
-    prompt_text = textwrap.dedent(item["prompt"])
-    st.code(prompt_text, language="")
+# 세션 상태에 글로벌 unlock 키 초기화
+if "global_unlock" not in st.session_state:
+    st.session_state["global_unlock"] = False
+
+# 글로벌 비밀번호 입력 폼 (비밀번호를 한번 입력하면 모든 프롬프트가 보임)
+if not st.session_state["global_unlock"]:
+    with st.form("unlock_form"):
+        global_password = st.text_input("전체 프롬프트 열람을 위한 비밀번호를 입력하세요:", type="password")
+        submitted = st.form_submit_button("확인")
+        if submitted:
+            if global_password == "snuidslab2025":  # 원하는 비밀번호로 변경 가능
+                st.session_state["global_unlock"] = True
+            else:
+                st.error("비밀번호가 틀렸습니다!")
+                
+# 글로벌 비밀번호가 올바른 경우에만 모든 프롬프트 표시
+if st.session_state["global_unlock"]:
+    for i, item in enumerate(prompts):
+        st.markdown(f"<a id='prompt-{i}'></a>", unsafe_allow_html=True)
+        st.write("---")
+        st.subheader(item["title"])
+        prompt_text = textwrap.dedent(item["prompt"])
+        st.code(prompt_text, language="")
+else:
+    st.write("비밀번호를 입력하시면 프롬프트 내용을 확인할 수 있습니다.")
