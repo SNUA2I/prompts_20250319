@@ -22,7 +22,7 @@ def prepare_data():
 다음 이야기를 완성하세요.
 옛날 옛적, 착한 콩쥐와
 
-이 이야기를 완성하세요.
+다음 이야기를 완성하세요.
 콩쥐라는 여자 아이가 자전거 타기를 좋아합니다.
 
 <<프롬프트 기법>>
@@ -554,7 +554,9 @@ def display_prompts():
         st.sidebar.subheader(category)
         for prompt in prompts:
             title = prompt['title']
-            st.sidebar.markdown(f"- [{title}](#{title.replace(' ', '-')})")
+            # 링크의 앵커를 고유하게 만들기 위해 카테고리도 포함
+            anchor = f"{category.replace(' ', '-')}-{title.replace(' ', '-')}"
+            st.sidebar.markdown(f"- [{title}](#{anchor})")
     
     # 메인 콘텐츠
     st.title("실습 프롬프트")
@@ -567,12 +569,17 @@ def display_prompts():
             title = prompt['title']
             content = prompt['content']
             
-            # 제목 라인 이후의 실제 프롬프트 내용만 추출
+            # 고유한 앵커 생성
+            anchor = f"{category.replace(' ', '-')}-{title.replace(' ', '-')}"
+            
+            # 제목 라인을 제외한 나머지 내용 추출
             content_lines = content.split('\n')
-            actual_content = '\n'.join([line for line in content_lines if not line.startswith('--- ')])
+            
+            # 제목 라인 이후의 행을 모두 포함
+            actual_content = '\n'.join(content_lines[1:]).strip()
             
             # 앵커 포인트 추가
-            st.markdown(f"<a name='{title.replace(' ', '-')}'></a>", unsafe_allow_html=True)
+            st.markdown(f"<a name='{anchor}'></a>", unsafe_allow_html=True)
             st.subheader(title)
             st.markdown("```\n" + actual_content + "\n```")
             st.markdown("---")
