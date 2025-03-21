@@ -9,13 +9,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# 비밀번호 설정 (실제 배포 시에는 더 안전한 방법 사용 권장)
+# 비밀번호 설저
 PASSWORD = "idslab2025"
 
 # 데이터 준비 함수
 def prepare_data():
     """프롬프트 데이터를 파싱하여 카테고리별로 정리합니다."""
-    # 샘플 프롬프트 데이터 (일부 프롬프트를 분할)
+    # 프롬프트 데이터
     data = """
 <<대규모 언어 모델의 특징>>
 --- 언어 모델과 학습 패턴 --------------------------------------------------------------
@@ -363,7 +363,7 @@ Final Answer : 원래 입력 질문에 대한 최종 답변
 이 동영상에 대한 설명을 주세요.
     """
     
-    # 파싱 로직: 카테고리와 프롬프트 제목, 내용을 분리
+    # 카테고리와 프롬프트 제목, 내용을 분리
     categories = defaultdict(list)
     current_category = None
     
@@ -402,7 +402,7 @@ Final Answer : 원래 입력 질문에 대한 최종 답변
     
     return categories
 
-# 비밀번호 확인 함수
+# 비밀번호 확인
 def check_password():
     """
     사용자가 입력한 비밀번호를 확인합니다.
@@ -432,7 +432,7 @@ def check_password():
     
     return False
 
-# 프롬프트 표시 함수
+# 프롬프트 표시
 def display_prompts():
     """
     카테고리와 프롬프트를 표시합니다.
