@@ -2,7 +2,7 @@ import streamlit as st
 import textwrap
 
 # 페이지 설정: 제목 및 레이아웃
-st.set_page_config(page_title="A2I 실습 프롬프트", layout="wide")
+st.set_page_config(page_title="실습 프롬프트", layout="wide")
 
 # 부드러운 스크롤링 효과를 위한 CSS
 st.markdown(
@@ -135,7 +135,7 @@ for group in group_order:
 
 st.sidebar.markdown(sidebar_markdown, unsafe_allow_html=True)
 
-st.title("A2I 실습 프롬프트")
+st.title("실습 프롬프트")
 
 # 세션 상태에 글로벌 unlock 키 초기화
 if "global_unlock" not in st.session_state:
