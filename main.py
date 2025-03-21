@@ -9,8 +9,8 @@ st.set_page_config(
     layout="wide"
 )
 
-# 비밀번호 설정 (실제 배포 시에는 더 안전한 방법 사용 권장)
-PASSWORD = "prompting123"
+# 비밀번호 설정
+PASSWORD = "idslab2025"
 
 # 데이터 준비 함수
 def prepare_data():
@@ -525,6 +525,14 @@ def check_password():
     
     if st.session_state.password_verified:
         return True
+    
+    # 웹사이트 제목과 설명 추가
+    st.title("프롬프트 엔지니어링 실습 자료")
+    st.markdown("""
+    이 웹사이트는 프롬프트 엔지니어링 학습을 위한 다양한 프롬프트 예제를 모아놓은 곳입니다.
+    프롬프트 기법, 대규모 언어 모델의 특성, 챗봇 활용 등 다양한 범주의 예제를 제공합니다.
+    접근하려면 비밀번호를 입력하세요.
+    """)
     
     password_input = st.text_input(
         "비밀번호를 입력하세요:", 
