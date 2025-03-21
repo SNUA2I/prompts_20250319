@@ -334,7 +334,7 @@ if not st.session_state["authenticated"]:
     if st.button("로그인"):
         if pw == "admin":  # 원하는 비밀번호로 수정 가능
             st.session_state["authenticated"] = True
-            st.experimental_rerun()
+            st.rerun()  # st.experimental_rerun() 대신 사용
         else:
             st.error("비밀번호가 틀렸습니다.")
 else:
