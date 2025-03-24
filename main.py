@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # 비밀번호 설정
-PASSWORD = "1111"
+#PASSWORD = "1111"
 
 # 데이터 준비 함수
 def prepare_data():
@@ -516,8 +516,8 @@ def main():
     """
     애플리케이션의 메인 기능입니다.
     """
-    if check_password():
-        display_prompts()
+    #if check_password():
+    display_prompts()
 
 if __name__ == "__main__":
     main()
