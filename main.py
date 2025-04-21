@@ -650,9 +650,7 @@ def display_prompts():
             # 앵커 포인트 추가
             st.markdown(f"<a name='{anchor}'></a>", unsafe_allow_html=True)
             st.subheader(title)
-            
-            # 마크다운 내용 렌더링 - 여기가 중요한 변경 부분
-            st.markdown(actual_content)
+            st.markdown("```\n" + actual_content + "\n```")
             st.markdown("---")
 
 # 메인 애플리케이션
@@ -665,3 +663,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
