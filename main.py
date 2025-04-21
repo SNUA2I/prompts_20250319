@@ -674,13 +674,9 @@ def display_prompts():
                     # 코드 블록 표시 (syntax highlighting 및 복사 버튼 제공)
                     st.code(code_content, language=language)
                 else:
-                    # 텍스트를 회색 배경의 인용구로 표시 (복사 가능)
-                    formatted_text = f"""
-                    <div style="background-color: #f0f2f6; padding: 10px; border-radius: 5px;">
-                    {part.replace('\n', '<br>')}
-                    </div>
-                    """
-                    st.markdown(formatted_text, unsafe_allow_html=True)
+                    # 일반 텍스트도 복사 버튼이 있는 코드 블록으로 표시
+                    # 언어를 'text'로 지정하면 구문 강조가 없는 일반 텍스트처럼 보이지만 복사 버튼은 있음
+                    st.code(part, language="text")
             
             st.markdown("---")
             
