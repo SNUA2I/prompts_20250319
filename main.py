@@ -650,20 +650,7 @@ def display_prompts():
             # 앵커 포인트 추가
             st.markdown(f"<a name='{anchor}'></a>", unsafe_allow_html=True)
             st.subheader(title)
-
-            # 코드 블럭이 포함된 경우와 아닌 경우 나눠서 처리
-            code_block_pattern = r"```(.*?)```"  # non-greedy
-            matches = re.split(code_block_pattern, actual_content, flags=re.DOTALL)
-
-            for i, chunk in enumerate(matches):
-                if i % 2 == 0:
-                    # 일반 텍스트
-                    if chunk.strip():
-                        st.markdown(chunk.strip())
-                else:
-                    # 코드 블럭 내용
-                    st.code(chunk.strip(), language='python')
-
+            st.markdown("```\n" + actual_content + "\n```")
             st.markdown("---")
 
 
