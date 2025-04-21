@@ -674,11 +674,16 @@ def display_prompts():
                     # 코드 블록 표시 (syntax highlighting 및 복사 버튼 제공)
                     st.code(code_content, language=language)
                 else:
-                    # 일반 텍스트는 텍스트 영역에 표시 (복사 가능)
-                    st.text_area("", part, height=min(400, len(part.split('\n'))*25), disabled=True)
+                    # 텍스트를 회색 배경의 인용구로 표시 (복사 가능)
+                    formatted_text = f"""
+                    <div style="background-color: #f0f2f6; padding: 10px; border-radius: 5px;">
+                    {part.replace('\n', '<br>')}
+                    </div>
+                    """
+                    st.markdown(formatted_text, unsafe_allow_html=True)
             
             st.markdown("---")
-
+            
 # 메인 애플리케이션
 def main():
     """
