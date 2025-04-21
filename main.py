@@ -650,7 +650,9 @@ def display_prompts():
             # 앵커 포인트 추가
             st.markdown(f"<a name='{anchor}'></a>", unsafe_allow_html=True)
             st.subheader(title)
-            st.markdown("```\n" + actual_content + "\n```")
+            
+            # 마크다운 내용 렌더링 - 여기가 중요한 변경 부분
+            st.markdown(actual_content)
             st.markdown("---")
 
 # 메인 애플리케이션
