@@ -625,7 +625,6 @@ def display_prompts():
         st.sidebar.subheader(category)
         for prompt in prompts:
             title = prompt['title']
-            # 링크의 앵커를 고유하게 만들기 위해 카테고리도 포함
             anchor = f"{category.replace(' ', '-')}-{title.replace(' ', '-')}"
             st.sidebar.markdown(f"- [{title}](#{anchor})")
     
@@ -650,7 +649,34 @@ def display_prompts():
             # 앵커 포인트 추가
             st.markdown(f"<a name='{anchor}'></a>", unsafe_allow_html=True)
             st.subheader(title)
-            st.markdown("```\n" + actual_content + "\n```")
+            
+            # 코드 블록과 지시문 텍스트 분리
+            parts = re.split(r'(```.*?```)', actual_content, flags=re.DOTALL)
+            
+            for part in parts:
+                part = part.strip()
+                if not part:
+                    continue
+                    
+                # 코드 블록인 경우
+                if part.startswith('```') and part.endswith('```'):
+                    # 코드 블록에서 ```를 제거하고 언어 식별
+                    code_content = part[3:-3].strip()
+                    
+                    # 언어 식별자가 있는지 확인 (첫 줄)
+                    first_line = code_content.split('\n')[0].strip()
+                    language = "python"  # 기본값
+                    
+                    if first_line in ["python", "javascript", "java", "cpp", "html", "css"]:
+                        language = first_line
+                        code_content = '\n'.join(code_content.split('\n')[1:])
+                    
+                    # 코드 블록 표시 (syntax highlighting 및 복사 버튼 제공)
+                    st.code(code_content, language=language)
+                else:
+                    # 일반 텍스트는 텍스트 영역에 표시 (복사 가능)
+                    st.text_area("", part, height=min(400, len(part.split('\n'))*25), disabled=True)
+            
             st.markdown("---")
 
 # 메인 애플리케이션
